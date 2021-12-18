@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Date: 2021-12-11 14:54:04
+ * @LastEditors: CK.Zh
+ * @LastEditTime: 2021-12-18 21:02:18
+ * @FilePath: /magicipxe/src/config/branding.h
+ */
 #ifndef CONFIG_BRANDING_H
 #define CONFIG_BRANDING_H
 
@@ -24,8 +31,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  * "iPXE".
  *
  */
-#define PRODUCT_NAME ""
-#define PRODUCT_SHORT_NAME "iPXE"
+#define PRODUCT_NAME "Magic PXE client  "
+#define PRODUCT_SHORT_NAME "MagicPXE"
 #define PRODUCT_URI "http://ipxe.org"
 
 /*

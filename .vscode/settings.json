@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "*.tpp": "cpp",
+        "*.cu": "cpp",
+        "*.tcu": "cpp",
+        "*.json": "json",
+        "*.txt": "txt",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "iterator": "cpp",
+        "string_view": "cpp"
+    }
+}

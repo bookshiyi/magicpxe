@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Date: 2021-12-11 14:54:05
+ * @LastEditors: CK.Zh
+ * @LastEditTime: 2021-12-18 20:41:26
+ * @FilePath: /magicipxe/src/include/ipxe/tables.h
+ */
 #ifndef _IPXE_TABLES_H
 #define _IPXE_TABLES_H
 
