@@ -1395,7 +1395,7 @@ endif
 endif
 endif
 
-# Alias for ipxe.%
+# Alias for magicpxe.%
 #
 $(BIN)/etherboot.% : $(BIN)/ipxe.%
 	ln -sf $(notdir $<) $@

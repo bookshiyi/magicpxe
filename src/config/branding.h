@@ -2,7 +2,7 @@
  * @Description: 
  * @Date: 2021-12-11 14:54:04
  * @LastEditors: CK.Zh
- * @LastEditTime: 2021-12-18 21:02:18
+ * @LastEditTime: 2021-12-19 23:00:27
  * @FilePath: /magicipxe/src/config/branding.h
  */
 #ifndef CONFIG_BRANDING_H
@@ -31,10 +31,9 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  * "iPXE".
  *
  */
-#define PRODUCT_NAME "Magic PXE client  "
+#define PRODUCT_NAME "MagicPXE client for AutolaborOS"
 #define PRODUCT_SHORT_NAME "MagicPXE"
-#define PRODUCT_URI "http://ipxe.org"
-
+#define PRODUCT_URI "https://magicpxe.autolabor.com.cn/"
 /*
  * Tag line
  *
@@ -42,7 +41,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  * by "iPXE", then the standard tag line "Open Source Network Boot
  * Firmware" is unlikely to fit neatly onto the screen.
  */
-#define PRODUCT_TAG_LINE "Open Source Network Boot Firmware"
+#define PRODUCT_TAG_LINE "Magic Network Boot Firmware for AutolaborOS based on iPXE"
 
 /*
  * Error messages

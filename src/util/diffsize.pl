@@ -47,8 +47,8 @@ sub calc_sizes($$) {
     system("git checkout $name >/dev/null"); $res ||= $?;
   }
 
-  system("make -j4 bin/ipxe.lkrn >/dev/null"); $res ||= $?;
-  system("make bin/ipxe.lkrn.sizes > .sizes/$rev.sizes"); $res ||= $?;
+  system("make -j4 bin/magicpxe.lkrn >/dev/null"); $res ||= $?;
+  system("make bin/magicpxe.lkrn.sizes > .sizes/$rev.sizes"); $res ||= $?;
 
   if (defined $name) {
     system("git checkout $lastrev >/dev/null"); $res ||= $?;

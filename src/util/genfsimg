@@ -186,7 +186,8 @@ for FILENAME ; do
 	    DESTDIR="${BIOSDIR}"
 	    DESTFILE=$(basename "${FILENAME}")
 	    if [ -z "${LKRN}" ] ; then
-		echo "SAY iPXE boot image" > "${SYSLINUXCFG}"
+		echo "SAY Welcome to MagicPXE boot image based on iPXE" > "${SYSLINUXCFG}"
+		echo "SAY build on $(date "+%Y/%m/%d-%H:%M:%S")" > "${SYSLINUXCFG}"
 		echo "TIMEOUT 30" >> "${SYSLINUXCFG}"
 		echo "DEFAULT ${DESTFILE}" >> "${SYSLINUXCFG}"
 		if [ -n "${SCRIPT}" ] ; then
@@ -302,9 +303,9 @@ if [ -n "${ISOIMG}" ] ; then
 	echo "${0}: cannot find a suitable mkisofs or equivalent" >&2
 	exit 1
     fi
-    "${MKISOFS}" -quiet -volid "iPXE" -preparer "iPXE build system" \
-	    -appid "iPXE - Open Source Network Boot Firmware" \
-	    -publisher "ipxe.org" -sysid "iPXE" -o "${ISOIMG}" \
+    "${MKISOFS}" -quiet -volid "MagicPXE" -preparer "MagicPXE build system" \
+	    -appid "MagicPXE - Magic Netboot Firmware based on iPXE" \
+	    -publisher "magicpxe.autolabor.com.cn" -sysid "MagicPXE" -o "${ISOIMG}" \
 	    ${ISOARGS} "${ISODIR}"
     if isohybrid --version >/dev/null 2>&1 ; then
 	ISOHYBRIDARGS=

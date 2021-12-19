@@ -6,3 +6,41 @@ Quick start guide:
    make
 
 For any more detailed instructions, see http://ipxe.org
+
+
+## MagicPXE设计
+
+### OEM
+#### 支持局域网下载AutolaborOS
+#### 自动安装系统
+#### 完成后烧录MagicPXE镜像到网卡ROM中
+
+### 用户使用
+#### 重新安装系统
+#### 进入Live版OS
+
+## 将脚本嵌入到ipxe二进制固件中
+make -j16 bin/ipxe.iso EMBED=magicpxe.ipxe
+
+## 参考资料
+
+### 脚本命令api
+https://ipxe.org/cmd
+
+### ipxe server
+https://boot.ipxe.org/
+http://boot.oskarcz.net
+http://netboot.cz
+http://boot.netboot.xyz
+https://mirrors.tuna.tsinghua.edu.cn/centos/8.5.2111/isos/x86_64/
+https://networkboot.org/
+
+### ROM烧录工具
+https://www.flashrom.org/Flashrom
+#### 命令
+##### 测试 
+flashrom -p nic3com:pci=00:0d.0
+##### 备份
+flashrom -p nic3com:pci=00:0d.0 -r backup.rom
+##### 烧录
+flashrom -p nic3com:pci=00:0d.0 -w ipxe.rom
