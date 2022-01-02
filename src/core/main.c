@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Date: 2021-12-11 14:54:04
+ * @LastEditors: CK.Zh
+ * @LastEditTime: 2022-01-02 12:04:45
+ * @FilePath: /magicipxe/src/core/main.c
+ */
 /**************************************************************************
 iPXE -  Network Bootstrap Program
 

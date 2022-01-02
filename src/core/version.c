@@ -57,7 +57,7 @@ extern char _build_id[];
 unsigned long build_timestamp = ( ( unsigned long ) _build_timestamp );
 
 /** Build ID */
-unsigned long build_id = ( ( unsigned long ) _build_id );
+unsigned long build_id = ( ( unsigned long ) 分发分发 );
 
 /** Product major version */
 const int product_major_version = VERSION_MAJOR;

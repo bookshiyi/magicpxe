@@ -1,7 +1,7 @@
 #!ipxe
 
-echo __dhcp : Automatically configure DHCP
-dhcp
+# echo __dhcp : Automatically configure DHCP
+# dhcp
 
 echo __ifconf net0 : Automatically configure interfaces
 ifconf net0
@@ -18,17 +18,21 @@ ifstat net0
 # echo __ipstat : Display IP statistics
 # ipstat
 
-echo __imgstat : Display images
-imgstat 
+# echo __imgstat : Display images
+# imgstat 
 
 
 # set target  http://boot.salstar.sk
-set target  https://boot.netboot.xyz
+# set target  https://boot.netboot.xyz
 # set target  http://netboot.cz
 # set target  http://boot.ipxe.org/demo/boot.php
 
-echo __Target ${target}
-chain  ${target}
+# set target https://raw.fastgit.org/autolaborcenter/magicpxe_server/main/menu.ipxe
+# set target  https://raw.githubusercontent.com/autolaborcenter/magicpxe_server/main/menu.ipxe
+
+# echo __Target ${target}
+# chain  ${target}
+
 
 # :menu
 # menu IPXE SUPERBOOT UPDATED ${master-version}
@@ -41,121 +45,105 @@ chain  ${target}
 
 # ##########################################################################
 
-# :start
-# isset ${arch} && goto skip_arch_detect ||
-# cpuid --ext 29 && set arch x86_64 || set arch i386
-# iseq ${buildarch} arm64 && set arch arm64 ||
-# :skip_arch_detect
-# chain --autofree boot.cfg ||
-# echo Attempting to retrieve latest upstream version number...
-# chain --timeout 5000 https://boot.netboot.xyz/version.ipxe ||
-# ntp 0.pool.ntp.org ||
-# iseq ${cls} serial && goto ignore_cls ||
-# set cls:hex 1b:5b:4a  # ANSI clear screen sequence - "^[[J"
-# set cls ${cls:string}
-# :ignore_cls
+set server_addr https://raw.githubusercontent.com/autolaborcenter/magicpxe_server/main/
+set server_mirror_addr https://raw.fastgit.org/autolaborcenter/magicpxe_server/main/
+set release_addr https://github.com/autolaborcenter/magicpxe_server/releases/download/
+set release_mirror_addr https://download.fastgit.org/autolaborcenter/magicpxe_server/releases/download/
 
-# # :version_check
-# # set latest_version 2.x
-# # echo ${cls}
-# # iseq ${version} ${latest_version} && goto version_up2date ||
-# # echo
-# # echo Updated version of netboot.xyz is available:
-# # echo
-# # echo Running version.....${version}
-# # echo Updated version.....${latest_version}
-# # echo
-# # echo Please download the latest version from netboot.xyz.
-# # echo
-# # echo Attempting to chain to latest version...
-# # chain --autofree http://${boot_domain}/ipxe/${ipxe_disk} ||
-# # :version_up2date
+set test_addr https://mirrors.tuna.tsinghua.edu.cn/centos/8/BaseOS/x86_64/os/images/pxeboot/
 
-# isset ${menu} && goto ${menu} ||
-# isset ${ip} || dhcp
+:start
+isset ${arch} && goto main_menu ||
+cpuid --ext 29 && set arch x86_64 || set arch i386
+iseq ${buildarch} arm64 && set arch arm64 ||
 
-# :main_menu
-# clear menu
-# set space:hex 20:20
-# set space ${space:string}
-# isset ${next-server} && menu ${site_name} v${version} - next-server: ${next-server} || menu ${site_name}
-# item --gap Default:
-# item local ${space} Startup from local storage device
-# item --gap Distributions:
-# iseq ${menu_install} 1 && item install ${space} AutolaborOS Network Installer (64-bit) ||
-# iseq ${menu_live} 1 && item live ${space} AutolaborOS Live (no install)(64-bit) ||
+:main_menu
+clear main_menu_choice
 
-# item --gap Tools:
-# iseq ${menu_utils} 1 && iseq ${platform} efi && item utils-efi ${space} Utilities (UEFI) ||
-# iseq ${menu_utils} 1 && iseq ${platform} pcbios && iseq ${arch} x86_64 && item utils-pcbios-64 ${space} Utilities (64-bit) ||
-# iseq ${menu_utils} 1 && iseq ${platform} pcbios && iseq ${arch} i386 && item utils-pcbios-32 ${space} Utilities (32-bit) ||
-# iseq ${menu_utils_arm} 1 && item utils-arm ${space} Utilities (arm64) ||
-# item change_arch ${space} Architecture: ${arch}
-# item shell ${space} iPXE shell
-# item netinfo ${space} Network card info
-# item lspci ${space} PCI Device List
-# item about ${space} About netboot.xyz
-# item --gap Signature Checks:
-# item sig_check ${space} netboot.xyz [ enabled: ${sigs_enabled} ]
-# isset ${github_user} && item --gap Custom Github Menu: ||
-# isset ${github_user} && item custom-github ${space} ${github_user}'s Custom Menu ||
-# isset ${custom_url} && item --gap Custom URL Menu: ||
-# isset ${custom_url} && item custom-url ${space} Custom URL Menu ||
-# isset ${menu} && set timeout 0 || set timeout ${boot_timeout}
-# choose --timeout ${timeout} --default ${menu} menu || goto local
-# echo ${cls}
-# goto ${menu} ||
-# iseq ${sigs_enabled} true && goto verify_sigs || goto change_menu
+menu MagicPXE for AutolaborOS v${version} - ${arch}  ${net0/ip}
 
-# :verify_sigs
-# imgverify ${menu}.ipxe ${sigs}${menu}.ipxe.sig || goto error
-# goto change_menu
+item --gap Default 
+item menu_boot_local ${space} [0] Boot normally from local
+item --gap AutolaborOS
+item menu_install_lastest ${space} [1] Install lastest AutolaborOS
+item menu_install_previous ${space} [2] Install previous AutolaborOS
+item menu_boot_live ${space} [3] Boot AutolaborOS-Live
+item --gap Utils
+item menu_lastest_magicpxe ${space} [4] Lastest MagicPXE
+item menu_memtest ${space} [5] Memory test
+item menu_netinfo ${space} [6] Network info
+item menu_lspci ${space} [7] PCI device list
+item menu_shell ${space} [8] MagicPXE shell
+item menu_about ${space} [9] About MagicPXE
 
-# :change_menu
-# chain ${menu}.ipxe || goto error
-# goto main_menu
+choose main_menu_choice || goto main_menu_exit
 
-# :error
-# echo Error occured, press any key to return to menu ...
-# prompt
-# goto main_menu
+#choose --timeout ${timeout} --default ${main_menu_choice} main_menu_choice || goto menu_boot_local
 
-# :local
-# echo Booting from local disks ...
-# exit 0
+echo ${cls}
+goto ${main_menu_choice}
+goto main_menu_exit
 
-# :shell
-# echo Type "exit" to return to menu.
-# set menu main_menu
-# shell
-# goto main_menu
+############################# default
+:menu_boot_local
+echo Booting from local disks ...
+exit 0
 
-# :change_arch
-# iseq ${arch} x86_64 && set arch i386 && set menu_linux_i386 1 && set menu_linux 0 && goto main_menu ||
-# iseq ${arch} i386 && set arch x86_64 && set menu_linux_i386 0 && set menu_linux 1 && goto main_menu ||
-# goto main_menu
 
-# :sig_check
-# iseq ${sigs_enabled} true && set sigs_enabled false || set sigs_enabled true
-# goto main_menu
+############################# AutolaborOS
+:menu_install_lastest
+# prompt -k 0x197e -t 2000 Press F12 to install ... || exit
+## autolaboros for magic pxe
+# kernel ${release_mirror_addr}lastest/vmlinuz initrd=initrd.gz inst.repo=${base}
+# initrd ${release_mirror_addr}lastest/initrd.gz
+## centos
+kernel ${test_addr}vmlinuz initrd=initrd.img inst.repo=${base}
+initrd ${test_addr}initrd.img
+boot
 
-# :about
-# chain https://boot.netboot.xyz/about.ipxe || chain about.ipxe
-# goto main_menu
 
-# :custom-github
-# chain https://raw.githubusercontent.com/${github_user}/netboot.xyz-custom/master/custom.ipxe || goto error
-# goto main_menu
 
-# :custom-url
-# chain ${custom_url}/custom.ipxe || goto error
-# goto main_menu
+:menu_install_previous
+goto main_menu
 
-# :custom-user
-# chain custom/custom.ipxe
-# goto main_menu
 
-##########################################################################
+:menu_boot_live
+goto main_menu
 
-# echo Start download newest firmware form magic.autolabor.com.cn
-#chain --autofree http://boot.netboot.xyz
+############################# Utils
+:menu_laetest_magicpxe
+goto main_menu
+
+:menu_memtest
+goto main_menu
+
+:menu_netinfo
+echo Network Information
+show net0/chip
+# goto menu_netinfo
+
+
+:menu_lspci
+echo PCI Device List
+lspci
+# goto menu_lspci
+
+
+:menu_shell
+echo Type "exit" to return to menu.
+set menu main_menu
+shell
+goto main_menu
+
+:menu_about
+chain https://boot.netboot.xyz/about.ipxe || chain about.ipxe
+goto main_menu
+
+:error
+echo Error occured, press any key to return to menu ...
+prompt
+goto main_menu
+
+:main_menu_exit
+echo Exit MagicPXE
+exit
